@@ -4,4 +4,5 @@ RUN apt-get update \
   && apt-get install -y \
   stress-ng \
   hdparm \
-  iperf3
+  iperf3 \
+  redis
