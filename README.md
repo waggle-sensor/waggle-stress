@@ -53,7 +53,7 @@ We need 2 containers running on different devices to stress the network.
 
 ```bash
 # on the server side in one of the devices
-docker run -d --rm waggle/waggle-stress:0.1.0 iperf -s
+docker run -d --rm --network host waggle/waggle-stress:0.1.0 iperf -s
 ```
 
 ```bash
