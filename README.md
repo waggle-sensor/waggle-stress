@@ -14,10 +14,10 @@ Some examples to run a particular stress test using this container are described
 This example stressts logical CPU cores. It uses whatever core frequency it is set. nvpmodel in Nvidia may be used to set desired cpu frequency before running this stress test.
 ```bash
 # stress 1 full logical core for 30 seconds
-docker run --rm waggle/waggle-stress:0.1.0 --cpu 1 --timeout 30
+docker run --rm waggle/waggle-stress:0.2.0 --cpu 1 --timeout 30
 
 # stress 50% on each of 2 logical cores for 60 seconds
-docker run --rm waggle/waggle-stress:0.1.0 --cpu 2 -l 50  --timeout 60
+docker run --rm waggle/waggle-stress:0.2.0 --cpu 2 -l 50  --timeout 60
 ```
 
 ## Memory stress
@@ -28,7 +28,7 @@ This can be updated as needed.
 
 We need to access `/dev/nvme0n1`. So we have to add `--privileged` to get access to host's `/dev`.
 ```bash
-docker run --rm --privileged waggle/waggle-stress:0.1.0 hdparm -Tt --direct /dev/nvme0n1
+docker run --rm --privileged waggle/waggle-stress:0.2.0 hdparm -Tt --direct /dev/nvme0n1
 ```
 
 Output would look like,
@@ -45,7 +45,7 @@ We need to mount the NVME volume into the container to test.
 
 _NOTE: In Waggle node, we use Kubernetes to run containers. In this configuration, the NVME is already mounted in `/run/waggle/uploads`_
 ```bash
-docker run --rm -v /path/to/nvme:/run/waggle/uploads waggle/waggle-stress:0.1.0 bash -c 'mkdir -p /run/waggle/uploads/.stress-test; dd if=/dev/zero of=/run/waggle/uploads/.stress-test/tempfile bs=10M count=512; sync; rm /run/waggle/uploads/.stress-test/tempfile; sync'
+docker run --rm -v /path/to/nvme:/run/waggle/uploads waggle/waggle-stress:0.2.0 bash -c 'mkdir -p /run/waggle/uploads/.stress-test; dd if=/dev/zero of=/run/waggle/uploads/.stress-test/tempfile bs=10M count=512; sync; rm /run/waggle/uploads/.stress-test/tempfile; sync'
 ```
 
 ## Network stress
@@ -53,11 +53,11 @@ We need 2 containers running on different devices to stress the network.
 
 ```bash
 # on the server side in one of the devices
-docker run -d --rm --network host waggle/waggle-stress:0.1.0 iperf -s
+docker run -d --rm --network host waggle/waggle-stress:0.2.0 iperf -s
 ```
 
 ```bash
 # on the client side in the other device
 # we assume the server is at 10.31.81.1
-docker run --rm waggle/waggle-stress:0.1.0 iperf -c 10.31.81.1
+docker run --rm waggle/waggle-stress:0.2.0 iperf -c 10.31.81.1
 ```
